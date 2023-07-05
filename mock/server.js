@@ -9,7 +9,7 @@ const bmData = require("./common/bm.json")
 const app = express()
 
 // 5.编写接口，添加返回值
-app.use("/sys/lodin", function (req, res) {
+app.use("/sys/login", function (req, res) {
   console.log(req, "req")
   res.json(
     Mock.mock({

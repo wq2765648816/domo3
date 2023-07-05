@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { getLogin } from "../utils/index"
+import { getLogin } from "@/api/api"
 export default {
   data() {
     return {
