@@ -1,5 +1,8 @@
 const { defineConfig } = require("@vue/cli-service")
-console.log(process)
+// console.log(process)
+const target =
+  process.env.VUE_APP_MOCK_SCHEAM === "true" ? process.env.VUE_APP_MOCK_URL : process.env.VUE_APP_CONSOLE_URL
+console.log(target)
 module.exports = defineConfig({
   productionSourceMap: false, // 生产环境的构造
   // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码。这个值会在 @vue/cli-plugin-eslint 被安装之后生效
@@ -28,9 +31,9 @@ module.exports = defineConfig({
       [process.env.VUE_APP_BASE_API]: {
         changeOrigin: true, // 配置代理默认开启target方式
         secure: false, // 如果是http接口，需要配置该参数
-        target: process.env.VUE_APP_CONSOLE_URL,
+        target,
         // 路径重写
-        pathRewriter: {
+        pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: ""
         }
       }
