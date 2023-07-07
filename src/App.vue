@@ -15,5 +15,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  list-style: none;
+}
+#app,
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #edeff2;
 }
 </style>

@@ -1,46 +1,219 @@
 <template>
-  <div>
-    <div>12312132</div>
-    <span>1231</span>
-    <el-button icon="el-icon-search" circle></el-button>
-    <el-button type="primary" icon="el-icon-edit" circle></el-button>
-    <el-button type="success" icon="el-icon-check" circle></el-button>
-    <el-button type="info" icon="el-icon-message" circle></el-button>
-    <el-button type="warning" icon="el-icon-star-off" circle></el-button>
-
-    <!-- <div>
-      <el-link href="https://element.eleme.io" target="_blank">默认链接</el-link>
-      <el-link type="primary">主要链接</el-link>
-      <el-link type="success">成功链接</el-link>
-      <el-link type="warning">警告链接</el-link>
-      <el-link type="danger">危险链接</el-link>
-      <el-link type="info">信息链接</el-link>
-    </div> -->
+  <div id="box">
+    <el-container>
+      <el-aside :width="isCollapse == true ? '65px' : '200px'">
+        <div class="loginImg">
+          <img
+            :style="isCollapse == true ? 'width:60px' : 'width:140px'"
+            :src="require('/src/assets/common/logo.png')"
+            alt=""
+          />
+        </div>
+        <el-menu
+          :collapse="isCollapse"
+          :default-active="$route.path"
+          class="el-menu-vertical-demo"
+          background-color="#ffffff00"
+          text-color="#ffffff"
+          active-text-color="#008dd4"
+          router
+        >
+          <el-menu-item
+            v-for="(item, index) in asideList"
+            :key="index"
+            :class="$route.path == item.path ? 'bgys' : ''"
+            :index="item.path"
+          >
+            <i :class="`iconfont ${item.icon}`"></i>
+            <span slot="title">{{ item.title }}</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-header>
+          <div class="leftHeader">
+            <i
+              :class="isCollapse == true ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
+              @click="isCollapse = !isCollapse"
+            ></i>
+            江苏传智播客教育科技股份有限公司
+            <span>体验版</span>
+          </div>
+          <div class="rightHeader">
+            <i class="el-icon-search"></i>
+            <i class="iconfont icon-allaround4sizhou"></i>
+            <i class="iconfont icon-translate"></i>
+            <div class="block">
+              <el-color-picker v-model="bgColor"></el-color-picker>
+            </div>
+            <el-avatar size="small" :src="require('/src/assets/common/bigUserHeader.png')"></el-avatar>
+            <el-dropdown>
+              <span class="el-dropdown-link"> 管理员<i class="el-icon-arrow-down el-icon--right"></i> </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>首页</el-dropdown-item>
+                <el-dropdown-item>退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
-
 <script>
-import { getLogin } from "@/api/api"
+import { getProfile } from "../api/api"
 export default {
   data() {
     return {
-      form: {
-        mobile: "13800000002",
-        password: "888itcast.CN764%..."
-      }
+      asideList: [
+        {
+          path: "/home",
+          icon: "icon-dashboard-fill",
+          title: "首页"
+        },
+        {
+          path: "/component",
+          icon: "icon-jiegou",
+          title: "组件架构"
+        },
+        {
+          path: "/staff",
+          icon: "icon-people",
+          title: "员工"
+        },
+        {
+          path: "/company",
+          icon: "icon-setting",
+          title: "公司设置"
+        },
+        {
+          path: "/Permission",
+          icon: "icon-setting",
+          title: "权限设置"
+        },
+
+        {
+          path: "/socia",
+          icon: "icon-component",
+          title: "社保"
+        },
+        {
+          path: "/checking",
+          icon: "icon-excel",
+          title: "考勤"
+        },
+        {
+          path: "/salary",
+          icon: "icon-calculator",
+          title: "工资"
+        },
+        {
+          path: "/examine",
+          icon: "icon-quanxianshenpi",
+          title: "审批"
+        }
+      ],
+      bgColor: "#409EFF",
+      isCollapse: false
     }
   },
-  methods: {},
-  created() {},
-  mounted() {
-    getLogin(this.form).then((res) => {
-      console.log(res)
-    })
+  methods: {
+    getList() {
+      getProfile().then((res) => {
+        console.log(res)
+      })
+    }
   },
-  components: {},
-  computed: {},
-  watch: {}
+  mounted() {
+    this.getList()
+  }
 }
 </script>
-
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#box {
+  height: 100%;
+  width: 100%;
+  .el-container {
+    height: 100%;
+    width: 100%;
+  }
+  /**侧边栏样式 */
+  .el-aside {
+    transition: 0.5s !important;
+    cursor: pointer;
+    background: url("/src/assets/common/leftnavBg.png") no-repeat bottom / contain,
+      linear-gradient(to bottom, #6291fe, #2b62f7);
+    .loginImg {
+      text-align: center;
+      padding: 8px;
+    }
+    .el-menu {
+      border: none;
+      background: rgba($color: #fff, $alpha: 0);
+      i {
+        font-size: 24px;
+        margin: 0 18px 0 8px;
+        color: #fff;
+      }
+    }
+    .el-menu-item {
+      height: 60px;
+      line-height: 60px;
+    }
+    li:hover {
+      background-color: #fff !important;
+      span,
+      i {
+        color: #2b62f7;
+      }
+    }
+    .bgys {
+      background-color: #fff !important;
+      i {
+        color: #2b62f7;
+      }
+    }
+  }
+  /**头部样式 */
+  .el-header {
+    height: 50px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #3561db, #5a8bfe);
+    color: #fff;
+    .leftHeader {
+      i {
+        font-size: 24px;
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+      span {
+        padding: 8px;
+        margin-left: 10px;
+        border-radius: 12px;
+        background-color: #84a9fe;
+        font-size: 14px;
+      }
+    }
+    .rightHeader {
+      display: flex;
+      align-items: center;
+      i {
+        font-size: 20px;
+        margin-right: 20px;
+      }
+      .el-dropdown {
+        margin-left: 5px;
+        color: #000;
+      }
+      .block {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+</style>

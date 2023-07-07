@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <span> 123</span>
-  </div>
+  <div>审批</div>
 </template>
 
 <script>
@@ -9,11 +7,7 @@ export default {
   data() {
     return {}
   },
-  methods: {
-    // add(){
-    // 	log
-    // }
-  },
+  methods: {},
   created() {},
   mounted() {},
   components: {},

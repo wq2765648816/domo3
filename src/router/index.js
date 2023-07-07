@@ -8,12 +8,55 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: HomeView
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/AboutView.vue")
+    redirect: "/home", // 重定向:重新指向其它path,会改变网址
+    component: HomeView,
+    children: [
+      {
+        path: "home",
+        name: "home",
+        component: () => import("../views/pageView/HomePage.vue")
+      },
+      {
+        path: "component",
+        name: "component",
+        component: () => import("../views/pageView/ComponentView.vue")
+      },
+      {
+        path: "staff",
+        name: "staff",
+        component: () => import("../views/pageView/StaffView.vue")
+      },
+      {
+        path: "company",
+        name: "company",
+        component: () => import("../views/pageView/CompanySetup.vue")
+      },
+      {
+        path: "Permission",
+        name: "Permission",
+        component: () => import("../views/pageView/PermissionView.vue")
+      },
+      {
+        path: "socia",
+        name: "socia",
+        component: () => import("../views/pageView/SocialSecurity.vue")
+      },
+      {
+        path: "checking",
+        name: "checking",
+        component: () => import("../views/pageView/CheckingView.vue")
+      },
+      {
+        path: "salary",
+        name: "salary",
+        component: () => import("../views/pageView/SalaryView.vue")
+      },
+      {
+        path: "examine",
+        name: "examine",
+        component: () => import("../views/pageView/ExamineView.vue")
+      }
+    ]
   },
   {
     path: "/login",
