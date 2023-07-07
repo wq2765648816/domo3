@@ -3,7 +3,29 @@ const { defineConfig } = require("@vue/cli-service")
 const target =
   process.env.VUE_APP_MOCK_SCHEAM === "true" ? process.env.VUE_APP_MOCK_URL : process.env.VUE_APP_CONSOLE_URL
 console.log(target)
+const path = require("path")
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 module.exports = defineConfig({
+  chainWebpack(config) {
+    // when there are many pages, it will cause too many meaningless requests
+    config.plugins.delete("prefetch")
+    // set svg-sprite-loader
+    config.module.rule("svg").exclude.add(resolve("src/icons")).end()
+    config.module
+      .rule("icons")
+      .test(/\.svg$/)
+      .include.add(resolve("src/icons"))
+      .end()
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]"
+      })
+      .end()
+  },
   productionSourceMap: false, // 生产环境的构造
   // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码。这个值会在 @vue/cli-plugin-eslint 被安装之后生效
   lintOnSave: false,

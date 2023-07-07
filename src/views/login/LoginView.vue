@@ -22,6 +22,7 @@
       </el-form>
       <div class="title">
         人生就像酷热的沙漠，挫折就如同炙热的太阳，但只有在经历酷热之后，才能看到真正的绿洲。坚持下去，你将发现属于你的美好人生。
+        <svg-icon icon-class="setting" />
       </div>
     </div>
   </div>

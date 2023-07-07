@@ -5,6 +5,7 @@ import store from "./store"
 // 全局注册 elementUI
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
+import "@/icons"
 Vue.use(ElementUI)
 
 // 按需引入 elementUI

@@ -2,7 +2,7 @@
 import axios from "axios"
 import { MessageBox } from "element-ui"
 import router from "@/router"
-import { getToken } from "./auth"
+import { getToken, removeToken } from "./auth"
 // 实例化 axios
 const http = axios.create({
   // baseURL: "http://ihrm-java.itheima.net/", // 基准地址
@@ -17,7 +17,6 @@ http.interceptors.request.use(
   (config) => {
     // 添加token
     config.headers["Authorization"] = getToken() // 请求头带上token
-
     return config
   },
   (error) => {
@@ -27,31 +26,42 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => {
     // 处理401
-    if (response.data && response.data.status === 2) {
+    console.log(response.data, "response.data")
+    if (response.data && response.data.status === 10002) {
       // 401, token失效
       // resetLoginInfo()
-      router.push({
-        name: "login"
-      })
+      // router.push({
+      //   name: "login"
+      // })
+      console.log(111)
+      router.push(
+        "/login"
+        // , () => {
+        //  resetLoginInfo()
+        // }
+      )
+      removeToken()
     }
     return response
   },
   (error) => {
     let title = ""
     let message = ""
+    console.log(error, "error")
 
     if (error && error.response) {
       message = error.response.data.message
       // 401, token失效
-      if (error.response.data.status === 2) {
+      console.log(error.response.data.code)
+      if (error.response.data.code === 10002) {
+        console.log(111)
         router.push(
-          {
-            name: "login"
-          },
-          () => {
-            //  resetLoginInfo()
-          }
+          "/login"
+          // , () => {
+          //  resetLoginInfo()
+          // }
         )
+        removeToken()
       }
       switch (
         error.response.status // 跨域存在获取不到状态码的情况
