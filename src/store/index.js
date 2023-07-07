@@ -4,9 +4,15 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    bgColor: "#4d7efc"
+  },
   getters: {},
-  mutations: {},
+  mutations: {
+    UpbgColor(state, val) {
+      state.bgColor = val
+    }
+  },
   actions: {},
   modules: {}
 })

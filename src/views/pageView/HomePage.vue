@@ -44,8 +44,8 @@
         <el-card class="oneBox" shadow="always">
           <div class="resTitle">流程申请</div>
           <div class="resBtn">
-            <el-button>加班离职</el-button>
-            <el-button>请假调休</el-button>
+            <el-button @click="dialogVisibleOver = true">加班离职</el-button>
+            <el-button @click="dialogVisibleLeave = true">请假调休</el-button>
             <el-button>审批列表</el-button>
             <el-button>我的信息</el-button>
           </div>
@@ -71,20 +71,33 @@
         </el-card>
       </el-col>
     </el-row>
+    <div class="footTitle">
+      <p><svg-icon icon-class="github"></svg-icon></p>
+      <p>copyright<svg-icon icon-class="copyright"></svg-icon> 2018 iHRM 系统 版本所有</p>
+    </div>
+    <OverTime :dialogVisibleOver.sync="dialogVisibleOver"></OverTime>
+    <LeaveForRest :dialogVisibleLeave.sync="dialogVisibleLeave"></LeaveForRest>
   </div>
 </template>
 
 <script>
+import OverTime from "@/components/HomeComponent/OverTime.vue"
+import LeaveForRest from "@/components/HomeComponent/LeaveForRest.vue"
 export default {
   data() {
     return {
-      date: new Date()
+      date: new Date(),
+      dialogVisibleOver: false,
+      dialogVisibleLeave: false
     }
   },
   methods: {},
   created() {},
   mounted() {},
-  components: {},
+  components: {
+    OverTime,
+    LeaveForRest
+  },
   computed: {},
   watch: {}
 }
@@ -221,5 +234,11 @@ export default {
 }
 ::v-deep .el-calendar__header {
   border: none;
+}
+// 尾部标题
+.footTitle {
+  font-size: 14px;
+  color: #838486;
+  text-align: center;
 }
 </style>

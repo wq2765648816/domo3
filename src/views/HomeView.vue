@@ -1,7 +1,7 @@
 <template>
   <div id="box">
     <el-container>
-      <el-aside :width="isCollapse == true ? '65px' : '200px'">
+      <el-aside :width="isCollapse == true ? '65px' : '200px'" v-color="$store.state.bgColor">
         <div class="loginImg">
           <img
             :style="isCollapse == true ? 'width:60px' : 'width:140px'"
@@ -30,7 +30,7 @@
         </el-menu>
       </el-aside>
       <el-container>
-        <el-header>
+        <el-header v-color="$store.state.bgColor">
           <div class="leftHeader">
             <i
               :class="isCollapse == true ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
@@ -40,12 +40,21 @@
             <span>体验版</span>
           </div>
           <div class="rightHeader">
-            <i class="el-icon-search"></i>
-            <i class="iconfont icon-allaround4sizhou"></i>
-            <i class="iconfont icon-translate"></i>
-            <div class="block">
-              <el-color-picker v-model="bgColor"></el-color-picker>
-            </div>
+            <el-tooltip class="item" effect="dark" content="站内搜索" placement="bottom" style="cursor: pointer">
+              <i class="el-icon-search"></i>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="全屏" placement="bottom" style="cursor: pointer">
+              <i class="iconfont icon-allaround4sizhou" @click="handleScreen"></i>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="多语言" placement="bottom" style="cursor: pointer">
+              <i class="iconfont icon-translate"></i>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="换肤" placement="bottom" style="cursor: pointer">
+              <div class="block">
+                <el-color-picker @change="changeBgColor" :value="$store.state.bgColor"></el-color-picker>
+              </div>
+            </el-tooltip>
+
             <el-avatar size="small" :src="require('/src/assets/common/bigUserHeader.png')"></el-avatar>
             <el-dropdown>
               <span class="el-dropdown-link"> 管理员<i class="el-icon-arrow-down el-icon--right"></i> </span>
@@ -65,6 +74,7 @@
 </template>
 <script>
 import { getProfile } from "../api/api"
+import screenfull from "screenfull"
 export default {
   data() {
     return {
@@ -121,10 +131,18 @@ export default {
     }
   },
   methods: {
+    // 获取数据
     getList() {
       getProfile().then((res) => {
         console.log(res)
       })
+    },
+    // 放大缩小
+    handleScreen() {
+      screenfull.toggle()
+    },
+    changeBgColor(e) {
+      this.$store.commit("UpbgColor", e)
     }
   },
   mounted() {
@@ -141,11 +159,12 @@ export default {
     width: 100%;
   }
   /**侧边栏样式 */
-  .el-aside {
+  ::v-deep .el-aside {
     transition: 0.5s !important;
+    box-shadow: 0px 0px 11px #000;
+    z-index: 99;
     cursor: pointer;
-    background: url("/src/assets/common/leftnavBg.png") no-repeat bottom / contain,
-      linear-gradient(to bottom, #6291fe, #2b62f7);
+    background: url("/src/assets/common/leftnavBg.png") no-repeat bottom / contain;
     .loginImg {
       text-align: center;
       padding: 8px;
@@ -183,7 +202,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(to right, #3561db, #5a8bfe);
+    // background: linear-gradient(to right, #3561db, #5a8bfe);
     color: #fff;
     .leftHeader {
       i {

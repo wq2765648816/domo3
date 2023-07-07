@@ -6,20 +6,32 @@ import store from "./store"
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
 import "@/icons"
+import httpRequest from "./utils/http"
+Vue.prototype.$http = httpRequest
 Vue.use(ElementUI)
 
-// 按需引入 elementUI
-// import { Button, Select, Message } from "element-ui"
-// Vue.use(Button)
-// Vue.use(Select)
-// Vue.use(Message)
-// Vue.component(Button.name, Button)
-// Vue.component(Select.name, Select)
+Vue.directive("color", {
+  bind(el, binding) {
+    el.style.backgroundColor = binding.value
+    el.style.borderColor = binding.value
+  },
+  update(el, binding) {
+    el.style.backgroundColor = binding.value
+    el.style.borderColor = binding.value
+  }
+})
+
+Vue.directive("txtColor", {
+  bind(el, binding) {
+    el.style.color = binding.value
+  },
+  update(el, binding) {
+    el.style.color = binding.value
+  }
+})
 
 Vue.config.productionTip = false
 
-import httpRequest from "./utils/http"
-Vue.prototype.$http = httpRequest
 new Vue({
   router,
   store,

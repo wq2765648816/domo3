@@ -3,8 +3,8 @@
     <el-row :gutter="24">
       <el-col :span="24">
         <el-card class="topBox" shadow="always">
-          <el-button type="primary" size="small">导入</el-button>
-          <el-button type="primary" icon="el-icon-plus" size="small">新增员工</el-button>
+          <el-button type="primary" size="small" v-color="$store.state.bgColor">导入</el-button>
+          <el-button type="primary" icon="el-icon-plus" size="small" v-color="$store.state.bgColor">新增员工</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -41,12 +41,14 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="230">
               <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                <el-button type="text" size="small">转正</el-button>
-                <el-button type="text" size="small">调岗</el-button>
-                <el-button type="text" size="small">离职</el-button>
-                <el-button type="text" size="small">角色</el-button>
-                <el-button type="text" size="small">删除</el-button>
+                <el-button @click="handleClick(scope.row)" type="text" size="small" v-txtColor="$store.state.bgColor"
+                  >查看</el-button
+                >
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor">转正</el-button>
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor">调岗</el-button>
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor">离职</el-button>
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor">角色</el-button>
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor">删除</el-button>
               </template>
             </el-table-column>
           </el-table>

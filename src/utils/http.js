@@ -27,20 +27,16 @@ http.interceptors.response.use(
   (response) => {
     // 处理401
     console.log(response.data, "response.data")
-    if (response.data && response.data.status === 10002) {
+    if (response.data && response.data.code === 10002) {
       // 401, token失效
       // resetLoginInfo()
       // router.push({
       //   name: "login"
       // })
       console.log(111)
-      router.push(
-        "/login"
-        // , () => {
-        //  resetLoginInfo()
-        // }
-      )
+
       removeToken()
+      router.push("/login")
     }
     return response
   },
@@ -54,14 +50,9 @@ http.interceptors.response.use(
       // 401, token失效
       console.log(error.response.data.code)
       if (error.response.data.code === 10002) {
-        console.log(111)
-        router.push(
-          "/login"
-          // , () => {
-          //  resetLoginInfo()
-          // }
-        )
         removeToken()
+
+        router.push("/login")
       }
       switch (
         error.response.status // 跨域存在获取不到状态码的情况

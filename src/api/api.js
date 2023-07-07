@@ -6,3 +6,8 @@ export const getLogin = (data) => http.post(http.adornUrl("/sys/login"), data).t
 export const getProfile = () => http.post(http.adornUrl("/sys/profile")).then((res) => res.data)
 // 获取员工列表
 export const getUser = (params) => http.get(http.adornUrl("/sys/user"), { params }).then((res) => res.data)
+// 加班离职接口
+export const getStartProcess = (data) =>
+  http.post(http.adornUrl("/user/process/startProcess"), data).then((res) => res.data)
+// 获取权限设置数据
+export const getPermission = (data) => http.get(http.adornUrl("/sys/permission"), { data }).then((res) => res.data)
