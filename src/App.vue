@@ -24,4 +24,7 @@ body {
   width: 100%;
   background-color: #edeff2;
 }
+.dialog-footer {
+  text-align: center;
+}
 </style>

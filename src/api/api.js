@@ -9,8 +9,6 @@ export const getUser = (params) => http.get(http.adornUrl("/sys/user"), { params
 // 加班离职接口
 export const getStartProcess = (data) =>
   http.post(http.adornUrl("/user/process/startProcess"), data).then((res) => res.data)
-// 获取权限设置数据
-export const getPermission = (params) => http.get(http.adornUrl("/sys/permission"), { params }).then((res) => res.data)
 
 // 获取组织架构数据
 export const getDepartment = (params) =>
@@ -24,3 +22,8 @@ export const lookdepartment = (params) =>
   http.get(http.adornUrl(`/company/department/${params.id}`), { params }).then((res) => res.data)
 // 删除部门
 export const delDepartment = (data) => http.delete(http.adornUrl(`/company/department/${data.id}`), data)
+
+// 获取权限管理数据
+export const getPermission = (params) => http.get(http.adornUrl("/sys/permission"), { params }).then((res) => res.data)
+// 添加权限点
+export const addPermission = (data) => http.post(http.adornUrl("/sys/permission"), data).then((res) => res.data)

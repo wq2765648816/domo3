@@ -25,7 +25,6 @@
               :data="listData"
               node-key="id"
               icon-class="iconfont icon-jiahaozhankai"
-              default-expand-all
               :expand-on-click-node="true"
             >
               <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -88,16 +87,12 @@ export default {
               let index = this.listData.findIndex((it) => it.id == pid)
               if (index == -1) {
                 for (let i = 0; i < this.listData.length; i++) {
-                  // console.log(this.listData[i].children)
                   let obj = this.listData[i].children.find((v) => v.id == pid)
-                  // obj.push(item)
-                  // console.log(obj)
                   if (obj) {
                     obj.children.push(item)
                   }
                 }
               } else {
-                // console.log(...item)
                 this.listData[index].children.push({
                   ...item,
                   children: []
@@ -118,9 +113,22 @@ export default {
         this.statusData.id = val.id
         this.statusData.status = val.status
       } else {
-        delDepartment({ id: val.id }).then((res) => {
-          console.log(res, "删除")
+        this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
+          .then(() => {
+            delDepartment({ id: val.id }).then((res) => {
+              console.log(res, "删除")
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            })
+          })
       }
     },
     // 关闭模态框 重新刷新页面
@@ -193,7 +201,6 @@ export default {
 ::v-deep .el-tree-node__expand-icon {
   content: "\e721";
   font-size: 20px;
-
   font-family: "iconfont";
   color: #000;
 }

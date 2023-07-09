@@ -117,4 +117,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep .el-dialog__header {
+  background-color: #66b1ff;
+  .el-dialog__title,
+  .el-dialog__close {
+    color: #fff;
+  }
+}
+</style>
