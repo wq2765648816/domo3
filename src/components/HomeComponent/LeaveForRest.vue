@@ -47,6 +47,7 @@
 <script>
 import moment from "moment"
 import { getStartProcess } from "@/api/api"
+import * as TS from "@/utils/constData"
 export default {
   props: ["dialogVisibleLeave"],
   data() {
@@ -57,7 +58,9 @@ export default {
         endTime: "",
         startTime: "",
         reason: "",
-        processName: ""
+        processName: "",
+        processKey: "process_leave",
+        userId: this.$store.state.userId || ""
       }
     }
   },
@@ -68,9 +71,14 @@ export default {
     onSubmit() {
       this.ruleForm.startTime = moment(this.ruleForm.startTime).format("YYYY-MM-DD HH:mm:ss")
       this.ruleForm.endTime = moment(this.ruleForm.endTime).format("YYYY-MM-DD HH:mm:ss")
-      console.log(this.ruleForm)
+      this.ruleForm.userId = this.$store.state.userId
       getStartProcess(this.ruleForm).then((res) => {
-        console.log(res)
+        let { code, message } = res
+        if (code == TS.STATUS.SUCCESS) {
+          this.$message.success(message)
+        } else {
+          this.$message.error(message)
+        }
       })
     },
     resetForm(ruleForm) {

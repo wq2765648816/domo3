@@ -26,7 +26,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => {
     // 处理401
-    console.log(response.data, "response.data")
+    // console.log(response.data, "response.data")
     if (response.data && response.data.code === 10002) {
       // 401, token失效
       // resetLoginInfo()

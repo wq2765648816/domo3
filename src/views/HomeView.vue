@@ -75,6 +75,7 @@
 <script>
 import { getProfile } from "../api/api"
 import screenfull from "screenfull"
+import * as TS from "@/utils/constData"
 export default {
   data() {
     return {
@@ -87,7 +88,7 @@ export default {
         {
           path: "/component",
           icon: "icon-jiegou",
-          title: "组件架构"
+          title: "组织架构"
         },
         {
           path: "/staff",
@@ -134,7 +135,13 @@ export default {
     // 获取数据
     getList() {
       getProfile().then((res) => {
-        console.log(res)
+        let { code, message, data } = res
+        if (code == TS.STATUS.SUCCESS) {
+          this.$store.commit("inUser", data.userId)
+          this.$message.success(message)
+        } else {
+          this.$message.error(message)
+        }
       })
     },
     // 放大缩小
