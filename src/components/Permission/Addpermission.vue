@@ -16,15 +16,36 @@
           <el-switch active-value="1" inactive-value="0" v-model="form.enVisible"></el-switch
           ><span :class="form.enVisible == 1 ? 'bgColor' : ''">可见</span>
         </el-form-item>
-        <el-form-item label="按钮样式">
-          <el-input v-model="form.pointClass"></el-input>
-        </el-form-item>
-        <el-form-item label="按钮icon">
-          <el-input v-model="form.pointIcon"></el-input>
-        </el-form-item>
-        <el-form-item label="按钮状态">
-          <el-input v-model="form.pointStatus"></el-input>
-        </el-form-item>
+        <template v-if="permissData.type == 2">
+          <el-form-item label="按钮样式">
+            <el-input v-model="form.pointClass"></el-input>
+          </el-form-item>
+          <el-form-item label="按钮icon">
+            <el-input v-model="form.pointIcon"></el-input>
+          </el-form-item>
+          <el-form-item label="按钮状态">
+            <el-input v-model="form.pointStatus"></el-input>
+          </el-form-item>
+        </template>
+        <template v-if="permissData.type == 3">
+          <el-form-item label="api请求地址">
+            <el-input v-model="form.apiUrl"></el-input>
+          </el-form-item>
+          <el-form-item label="api请求方式">
+            <el-input v-model="form.apiMethod"></el-input>
+          </el-form-item>
+          <el-form-item label="api类型">
+            <el-input v-model="form.apiLevel"></el-input>
+          </el-form-item>
+        </template>
+        <template v-if="permissData.type == 1">
+          <el-form-item label="菜单顺序">
+            <el-input v-model="form.menuOrder"></el-input>
+          </el-form-item>
+          <el-form-item label="菜单icon">
+            <el-input v-model="form.mentIcon"></el-input>
+          </el-form-item>
+        </template>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="onOff">取 消</el-button>
@@ -36,21 +57,26 @@
 
 <script>
 import * as TS from "@/utils/constData"
-import { addPermission } from "@/api/api"
+import { addPermission, LookPermission } from "@/api/api"
 export default {
-  props: ["dialogFormVisible", "permissData"],
+  props: ["dialogFormVisible", "permissData", "lookId"],
   data() {
     return {
       form: {
         enVisible: "",
         code: "",
         description: "",
-        type: 2,
         name: "",
         pointClass: "",
         pointIcon: "",
-        pointStatus: ""
-      }
+        pointStatus: "",
+        apiUrl: "",
+        apiMethod: "",
+        apiLevel: "",
+        menuOrder: "",
+        mentIcon: ""
+      },
+      LookCode: ""
     }
   },
   methods: {
@@ -60,12 +86,76 @@ export default {
     },
     // 添加权限
     onAdd() {
-      console.log(this.permissData)
-      addPermission({ ...this.form, ...this.permissData }).then((res) => {
-        let { code, message } = res
-        if (code == TS.STATUS.SUCCESS) {
-          this.$message.success(message)
-        }
+      let {
+        enVisible,
+        code,
+        description,
+        name,
+        pointClass,
+        pointIcon,
+        pointStatus,
+        apiUrl,
+        apiMethod,
+        apiLevel,
+        menuOrder,
+        mentIcon
+      } = this.form
+      if (this.permissData.type == 2) {
+        addPermission({
+          enVisible,
+          code,
+          description,
+          name,
+          pointClass,
+          pointIcon,
+          pointStatus,
+          ...this.permissData
+        }).then((res) => {
+          let { code, message } = res
+          if (code == TS.STATUS.SUCCESS) {
+            this.$message.success(message)
+            this.$emit("updata")
+          }
+        })
+      } else if (this.permissData.type == 3) {
+        addPermission({
+          enVisible,
+          code,
+          description,
+          name,
+          apiUrl,
+          apiMethod,
+          apiLevel,
+          ...this.permissData
+        }).then((res) => {
+          let { code, message } = res
+          if (code == TS.STATUS.SUCCESS) {
+            this.$message.success(message)
+            this.$emit("updataTow")
+          }
+        })
+      } else if (this.permissData.type == 1) {
+        addPermission({
+          enVisible,
+          code,
+          description,
+          name,
+          menuOrder,
+          mentIcon,
+          ...this.permissData
+        }).then((res) => {
+          let { code, message } = res
+          if (code == TS.STATUS.SUCCESS) {
+            this.$message.success(message)
+            this.$emit("updata")
+          }
+        })
+      }
+    },
+    getLookData() {
+      LookPermission({ id: this.LookCode }).then((res) => {
+        console.log(res)
+        this.form = res.data
       })
     }
   },
@@ -73,12 +163,28 @@ export default {
   mounted() {},
   components: {},
   computed: {},
-  watch: {}
+  watch: {
+    lookId: {
+      handler(newValue) {
+        console.log(newValue)
+        this.LookCode = newValue
+        this.getLookData()
+      },
+      deep: true
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .bgColor {
   color: #409eff;
+}
+::v-deep .el-dialog__header {
+  background-color: #66b1ff;
+  .el-dialog__title,
+  .el-dialog__close {
+    color: #fff;
+  }
 }
 </style>

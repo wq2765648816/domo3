@@ -4,7 +4,7 @@
       <el-col :span="24">
         <el-card shadow="always">
           <div class="topBox">
-            <el-button type="primary" icon="el-icon-edit" size="medium" v-color="$store.state.bgColor"
+            <el-button type="primary" icon="el-icon-edit" size="medium" v-color="$store.state.bgColor" @click="addMent"
               >添加菜单</el-button
             >
           </div>
@@ -36,10 +36,12 @@
                   @click="add(scope.row)"
                   >添加权限点</el-button
                 >
-                <el-button type="text" size="small" v-txtColor="$store.state.bgColor" @click="lookApi"
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor" @click="lookApi(scope.row)"
                   >查看api权限</el-button
                 >
-                <el-button type="text" size="small" v-txtColor="$store.state.bgColor">查看</el-button>
+                <el-button type="text" size="small" v-txtColor="$store.state.bgColor" @click="lookRes(scope.row.id)"
+                  >查看</el-button
+                >
                 <el-button type="text" size="small" v-txtColor="$store.state.bgColor">删除</el-button>
               </template>
             </el-table-column>
@@ -51,7 +53,13 @@
       <p><svg-icon icon-class="github"></svg-icon></p>
       <p>copyright<svg-icon icon-class="copyright"></svg-icon> 2018 iHRM 系统 版本所有</p>
     </div>
-    <addPermission :dialogFormVisible.sync="dialogFormVisible" :permissData="permissData"></addPermission>
+    <addPermission
+      @updata="updata"
+      :dialogFormVisible.sync="dialogFormVisible"
+      :permissData="permissData"
+      :lookId="lookId"
+    ></addPermission>
+    <LookApiViewVue :dialogTableVisible.sync="dialogTableVisible" :lookApiPid="lookApiPid"></LookApiViewVue>
   </div>
 </template>
 
@@ -59,6 +67,7 @@
 import { getPermission } from "@/api/api"
 import * as TS from "@/utils/constData"
 import addPermission from "@/components/Permission/Addpermission.vue"
+import LookApiViewVue from "@/components/Permission/LookApiView.vue"
 export default {
   data() {
     return {
@@ -68,9 +77,13 @@ export default {
       },
       listData: [],
       dialogFormVisible: false,
+      dialogTableVisible: false,
       permissData: {
-        pid: ""
-      }
+        pid: "",
+        type: 2
+      },
+      lookApiPid: "",
+      lookId: ""
     }
   },
   methods: {
@@ -92,8 +105,6 @@ export default {
     },
     // 展开数据
     load(tree, treeNode, resolve) {
-      console.log(resolve)
-      console.log(treeNode)
       this.pageData.type = 2
       this.pageData.pid = tree.id
       getPermission(this.pageData).then((res) => {
@@ -107,10 +118,34 @@ export default {
         }
       })
     },
+    // 打开子组件添加权限
     add(val) {
-      console.log(val)
+      this.permissData.pid = val.id
+      console.log(this.permissData)
+      this.dialogFormVisible = true
+    },
+    // 查看api权限
+    lookApi(val) {
+      this.permissData.pid = val.id
+      this.dialogTableVisible = true
+      this.lookApiPid = val.id
+    },
+    // 查看详情
+    lookRes(val) {
+      this.permissData.type = 1
+      this.lookId = val
+      this.dialogFormVisible = true
+    },
+    // 关闭模态框
+    updata() {
+      this.dialogFormVisible = false
+      this.getList()
+    },
+    // 主菜单添加
+    addMent() {
       this.permissData = {
-        pid: val.pid
+        pid: 0,
+        type: 1
       }
       this.dialogFormVisible = true
     }
@@ -120,7 +155,8 @@ export default {
     this.getList()
   },
   components: {
-    addPermission
+    addPermission,
+    LookApiViewVue
   },
   computed: {},
   watch: {}

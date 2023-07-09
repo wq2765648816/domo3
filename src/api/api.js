@@ -27,3 +27,6 @@ export const delDepartment = (data) => http.delete(http.adornUrl(`/company/depar
 export const getPermission = (params) => http.get(http.adornUrl("/sys/permission"), { params }).then((res) => res.data)
 // 添加权限点
 export const addPermission = (data) => http.post(http.adornUrl("/sys/permission"), data).then((res) => res.data)
+// 查看权限详情
+export const LookPermission = (params) =>
+  http.get(http.adornUrl(`/sys/permission/${params.id}`), { params }).then((res) => res.data)
