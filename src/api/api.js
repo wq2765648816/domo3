@@ -30,3 +30,10 @@ export const addPermission = (data) => http.post(http.adornUrl("/sys/permission"
 // 查看权限详情
 export const LookPermission = (params) =>
   http.get(http.adornUrl(`/sys/permission/${params.id}`), { params }).then((res) => res.data)
+
+// 获取考勤部门列表
+export const getDepartmentList = (params) =>
+  http.get(http.adornUrl("/company/department"), { params }).then((res) => res.data)
+// 获取考勤列表
+export const getAttendancesList = (params) =>
+  http.get(http.adornUrl("/attendances"), { params }).then((res) => res.data)

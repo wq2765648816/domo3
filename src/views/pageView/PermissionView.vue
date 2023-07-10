@@ -144,7 +144,7 @@ export default {
     // 主菜单添加
     addMent() {
       this.permissData = {
-        pid: 0,
+        pid: "0",
         type: 1
       }
       this.dialogFormVisible = true

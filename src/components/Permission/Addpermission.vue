@@ -12,9 +12,13 @@
           <el-input v-model="form.description"></el-input>
         </el-form-item>
         <el-form-item label="企业可见">
-          <span :class="form.enVisible == 0 ? 'bgColor' : ''">不可见</span>
-          <el-switch active-value="1" inactive-value="0" v-model="form.enVisible"></el-switch
-          ><span :class="form.enVisible == 1 ? 'bgColor' : ''">可见</span>
+          <el-switch
+            active-value="1"
+            inactive-value="0"
+            v-model="form.enVisible"
+            active-text="可见"
+            inactive-text="不可见"
+          ></el-switch>
         </el-form-item>
         <template v-if="permissData.type == 2">
           <el-form-item label="按钮样式">
@@ -115,6 +119,8 @@ export default {
           if (code == TS.STATUS.SUCCESS) {
             this.$message.success(message)
             this.$emit("updata")
+          } else {
+            this.$message.error(message)
           }
         })
       } else if (this.permissData.type == 3) {
@@ -132,6 +138,8 @@ export default {
           if (code == TS.STATUS.SUCCESS) {
             this.$message.success(message)
             this.$emit("updataTow")
+          } else {
+            this.$message.error(message)
           }
         })
       } else if (this.permissData.type == 1) {
@@ -148,6 +156,8 @@ export default {
           if (code == TS.STATUS.SUCCESS) {
             this.$message.success(message)
             this.$emit("updata")
+          } else {
+            this.$message.error(message)
           }
         })
       }
